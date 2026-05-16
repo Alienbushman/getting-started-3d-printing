@@ -1,0 +1,51 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const guides = await getCollection('guides');
+  return guides.map((guide) => ({
+    params: { topic: guide.slug },
+    props: { guide },
+  }));
+}
+
+const { guide } = Astro.props;
+const { Content } = await guide.render();
+
+const allGuides = (await getCollection('guides')).sort((a, b) => a.data.order - b.data.order);
+const idx = allGuides.findIndex((g) => g.slug === guide.slug);
+const prev = idx > 0 ? allGuides[idx - 1] : null;
+const next = idx < allGuides.length - 1 ? allGuides[idx + 1] : null;
+const base = import.meta.env.BASE_URL;
+---
+
+<Base title={guide.data.title}>
+  <div class="mx-auto max-w-content px-4 md:px-8 lg:px-12 py-12">
+    <div class="flex items-center justify-between mb-6 text-sm text-neutral-500">
+      <a href={`${base}guide/`} class="hover:text-ink">&larr; Guide hub</a>
+      <span>Topic {String(guide.data.order).padStart(2, '0')} of 08 &nbsp;·&nbsp; Est read: {guide.data.est_read_time_minutes} min</span>
+    </div>
+    <h1 class="font-display text-3xl font-semibold text-ink mb-8">{guide.data.title}</h1>
+    <div class="prose max-w-none">
+      <Content />
+    </div>
+    {guide.data.callout && (
+      <div class="border-l-4 border-warning bg-accent-soft px-4 py-3 mt-8 text-sm text-ink">
+        {guide.data.callout}
+      </div>
+    )}
+    <nav class="flex justify-between mt-12 gap-4 text-sm" aria-label="Guide pagination">
+      {prev ? (
+        <a href={`${base}guide/${prev.slug}/`} class="text-neutral-500 hover:text-ink">
+          &larr; {String(prev.data.order).padStart(2, '0')} {prev.data.title}
+        </a>
+      ) : <span />}
+      {next && (
+        <a href={`${base}guide/${next.slug}/`} class="text-neutral-500 hover:text-ink ml-auto">
+          {String(next.data.order).padStart(2, '0')} {next.data.title} &rarr;
+        </a>
+      )}
+    </nav>
+  </div>
+</Base>

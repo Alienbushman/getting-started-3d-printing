@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const guides = (await getCollection('guides')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base title="Getting Started Guide" description="Eight topics to get you printing on day one.">
+  <div class="mx-auto max-w-content px-4 md:px-8 lg:px-12 py-12">
+    <h1 class="font-display text-3xl font-semibold text-ink mb-4">Getting started with 3D printing</h1>
+    <p class="text-lg text-neutral-500 mb-8">Eight topics. ~45 minutes total. Skip around.</p>
+    <ol class="space-y-3">
+      {guides.map((guide) => (
+        <li class="flex gap-4 items-baseline">
+          <span class="text-neutral-300 text-sm font-display w-6 shrink-0">
+            {String(guide.data.order).padStart(2, '0')}
+          </span>
+          <a href={`${import.meta.env.BASE_URL}guide/${guide.data.slug}/`} class="font-semibold text-ink hover:text-accent">
+            {guide.data.title}
+          </a>
+          <span class="text-xs text-neutral-500">{guide.data.est_read_time_minutes} min</span>
+        </li>
+      ))}
+    </ol>
+  </div>
+</Base>

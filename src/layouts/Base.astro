@@ -1,0 +1,65 @@
+---
+import '@fontsource/space-grotesk/600.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Beginner-friendly 3D printing guides and printable models.' } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="icon" href={`${base}favicon.ico`} />
+    <title>{title} — getting-started-3d-printing</title>
+  </head>
+  <body class="bg font-sans text-ink">
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-accent focus:text-white focus:px-3 focus:py-1 focus:rounded">
+      Skip to content
+    </a>
+
+    <header class="border-b border-neutral-100">
+      <div class="mx-auto max-w-content px-4 md:px-8 lg:px-12 flex items-center justify-between h-14">
+        <a href={`${base}`} class="font-display font-semibold text-sm text-ink">
+          getting-started-3d-printing
+        </a>
+        <nav aria-label="Site navigation">
+          <ul class="flex gap-6 text-sm text-neutral-500">
+            <li><a href={`${base}models/`} class="hover:text-ink">Models</a></li>
+            <li><a href={`${base}guide/`} class="hover:text-ink">Guide</a></li>
+            <li><a href={`${base}glossary/`} class="hover:text-ink">Glossary</a></li>
+            <li><a href={`${base}about/`} class="hover:text-ink">About</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="border-t border-neutral-100 mt-16">
+      <div class="mx-auto max-w-content px-4 md:px-8 lg:px-12 py-8 flex flex-wrap gap-4 items-center justify-between text-xs text-neutral-500">
+        <span>alienbushman &copy; 2026</span>
+        <nav aria-label="Footer navigation">
+          <ul class="flex gap-4">
+            <li><a href="https://github.com/Alienbushman" class="hover:text-ink">GitHub</a></li>
+            <li><a href={`${base}about/`} class="hover:text-ink">License</a></li>
+            <li><a href={`${base}models/`} class="hover:text-ink">Sitemap</a></li>
+          </ul>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

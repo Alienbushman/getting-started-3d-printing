@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<Base title="Page Not Found" description="This page does not exist.">
+  <div class="mx-auto max-w-content px-4 md:px-8 lg:px-12 py-20 text-center">
+    <h1 class="font-display text-3xl font-semibold text-ink mb-4">404 — Page not found</h1>
+    <p class="text-neutral-500 mb-8">That nozzle missed. The page you're looking for isn't here.</p>
+    <div class="flex gap-4 justify-center">
+      <a href={`${base}`} class="inline-block bg-accent text-white font-semibold text-sm px-5 py-2.5 rounded hover:opacity-90">
+        Home
+      </a>
+      <a href={`${base}models/`} class="inline-block border border-ink text-ink font-semibold text-sm px-5 py-2.5 rounded hover:bg-neutral-50">
+        Browse models
+      </a>
+    </div>
+  </div>
+</Base>
