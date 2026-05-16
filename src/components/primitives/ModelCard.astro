@@ -1,3 +1,53 @@
 ---
-// Primitive placeholder — implement per design/visual-identity.md
+interface Props {
+  title: string;
+  slug: string;
+  image: string;
+  difficulty: 'beginner' | 'intermediate';
+  est_print_time_minutes: number;
+  skill_tags?: string[];
+  description: string;
+}
+
+const { title, slug, image, difficulty, est_print_time_minutes, skill_tags = [], description } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const imgSrc = `${base.slice(0, -1)}${image}`;
+
+const h = Math.floor(est_print_time_minutes / 60);
+const m = est_print_time_minutes % 60;
+const timeStr = h > 0 ? (m > 0 ? `~${h}h ${m}m` : `~${h}h`) : `~${m}m`;
 ---
+
+<a
+  href={`${base}models/${slug}/`}
+  class="group flex flex-col border border-neutral-100 rounded-lg overflow-hidden hover:border-accent-soft hover:bg-neutral-50 transition-colors"
+  aria-label={`${title} — ${difficulty}, ${timeStr} print`}
+>
+  <div class="aspect-square bg-neutral-50 overflow-hidden">
+    <img
+      src={imgSrc}
+      alt={title}
+      class="w-full h-full object-cover"
+      loading="lazy"
+      width="400"
+      height="400"
+    />
+  </div>
+  <div class="p-4 flex-1 flex flex-col gap-2">
+    <h3 class="font-display font-semibold text-lg text-ink group-hover:text-accent transition-colors leading-snug">
+      {title}
+    </h3>
+    <p class="text-sm text-neutral-500 leading-relaxed flex-1">{description}</p>
+    <div class="flex flex-wrap gap-2 items-center mt-1">
+      <span class={`text-xs px-2 py-0.5 rounded font-semibold ${difficulty === 'beginner' ? 'bg-accent-soft text-accent' : 'bg-neutral-100 text-neutral-500'}`}>
+        {difficulty}
+      </span>
+      <span class="text-xs text-neutral-500">{timeStr}</span>
+      {skill_tags.slice(0, 2).map((tag) => (
+        <span class="text-xs border border-neutral-100 text-neutral-500 rounded px-2 py-0.5">
+          {tag.replace(/-/g, ' ')}
+        </span>
+      ))}
+    </div>
+  </div>
+</a>

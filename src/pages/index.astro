@@ -1,18 +1,32 @@
 ---
 import Base from '../layouts/Base.astro';
+import ModelCard from '../components/primitives/ModelCard.astro';
+import { getCollection } from 'astro:content';
 
 const base = import.meta.env.BASE_URL;
+
+const allModels = await getCollection('models');
+const featured = allModels.filter((m) => m.data.featured === true).slice(0, 6);
+
+const guides = (await getCollection('guides'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 4);
 ---
 
-<Base title="Home" description="10 beginner-friendly 3D prints and 8 guides — no fluff.">
-  <section class="mx-auto max-w-content px-4 md:px-8 lg:px-12 py-20 text-center">
-    <h1 class="font-display text-3xl font-semibold text-ink mb-4">
+<Base
+  title="Getting Started with 3D Printing"
+  description="Ten beginner-friendly prints and eight guides — slicer-to-bed in a day, no fluff."
+>
+  <!-- Hero -->
+  <section class="mx-auto max-w-content px-4 md:px-8 lg:px-12 pt-16 pb-12">
+    <h1 class="font-display text-3xl font-semibold text-ink mb-4 max-w-xl">
       Start printing in a day, not a month.
     </h1>
-    <p class="text-lg text-neutral-500 mb-8">
-      10 beginner-friendly prints + 8 guides, no fluff.
+    <p class="text-lg text-neutral-500 mb-8 max-w-xl">
+      Ten beginner-friendly prints + eight guides, no fluff. Pick a model, follow
+      the guide, get a part in your hand.
     </p>
-    <div class="flex gap-4 justify-center flex-wrap">
+    <div class="flex gap-4 flex-wrap">
       <a
         href={`${base}models/`}
         class="inline-block bg-accent text-white font-semibold text-sm px-5 py-2.5 rounded hover:opacity-90 transition-opacity"
@@ -21,10 +35,125 @@ const base = import.meta.env.BASE_URL;
       </a>
       <a
         href={`${base}guide/`}
-        class="inline-block border border-ink text-ink font-semibold text-sm px-5 py-2.5 rounded hover:bg-neutral-50 transition-colors"
+        class="inline-block border border-neutral-300 text-ink font-semibold text-sm px-5 py-2.5 rounded hover:bg-neutral-50 transition-colors"
       >
         Read the guide
       </a>
+    </div>
+  </section>
+
+  <!-- What you'll learn -->
+  <section class="bg-neutral-50 border-y border-neutral-100 py-12" aria-labelledby="learn-heading">
+    <div class="mx-auto max-w-content px-4 md:px-8 lg:px-12">
+      <h2 id="learn-heading" class="font-display text-2xl font-semibold text-ink mb-8">
+        What you'll learn
+      </h2>
+      <div class="grid gap-6 sm:grid-cols-3">
+        <div class="flex flex-col gap-3">
+          <div class="w-10 h-10 text-accent" aria-hidden="true">
+            <!-- printer icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="6" y="2" width="12" height="8" rx="1"/>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+              <rect x="6" y="14" width="12" height="8" rx="1"/>
+            </svg>
+          </div>
+          <h3 class="font-display font-semibold text-lg text-ink">First print, start to finish</h3>
+          <p class="text-sm text-neutral-500 leading-relaxed">
+            Slice a model, send it to the printer, watch the first layer, and remove the finished part.
+            In 20 minutes on a beginner machine.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <div class="w-10 h-10 text-accent" aria-hidden="true">
+            <!-- wrench/fix icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </div>
+          <h3 class="font-display font-semibold text-lg text-ink">When it goes wrong</h3>
+          <p class="text-sm text-neutral-500 leading-relaxed">
+            Stringing, warping, layer separation — each failure has one root cause and one fix.
+            The common-failures guide maps symptom to setting.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <div class="w-10 h-10 text-accent" aria-hidden="true">
+            <!-- checklist icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 11l3 3L22 4"/>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+          </div>
+          <h3 class="font-display font-semibold text-lg text-ink">Pick a model you'll finish</h3>
+          <p class="text-sm text-neutral-500 leading-relaxed">
+            Every model here is license-clean, beginner-friendly, and teaches one specific skill.
+            No exotic filament, no enclosed enclosure required.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured models -->
+  {featured.length > 0 && (
+    <section class="mx-auto max-w-content px-4 md:px-8 lg:px-12 py-12" aria-labelledby="featured-heading">
+      <div class="flex items-baseline justify-between mb-8 gap-4">
+        <h2 id="featured-heading" class="font-display text-2xl font-semibold text-ink">
+          Featured models
+        </h2>
+        <a href={`${base}models/`} class="text-sm text-accent hover:opacity-80 transition-opacity shrink-0">
+          All models &rarr;
+        </a>
+      </div>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {featured.map((model) => (
+          <ModelCard
+            title={model.data.title}
+            slug={model.slug}
+            image={model.data.image}
+            difficulty={model.data.difficulty}
+            est_print_time_minutes={model.data.est_print_time_minutes}
+            skill_tags={model.data.skill_tags}
+            description={model.data.description}
+          />
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Quick path -->
+  <section class="bg-neutral-50 border-y border-neutral-100 py-12" aria-labelledby="path-heading">
+    <div class="mx-auto max-w-content px-4 md:px-8 lg:px-12">
+      <div class="flex items-baseline justify-between mb-8 gap-4">
+        <h2 id="path-heading" class="font-display text-2xl font-semibold text-ink">
+          Getting-started path
+        </h2>
+        <a href={`${base}guide/`} class="text-sm text-accent hover:opacity-80 transition-opacity shrink-0">
+          All 8 topics &rarr;
+        </a>
+      </div>
+      <ol class="space-y-3">
+        {guides.map((guide) => (
+          <li>
+            <a
+              href={`${base}guide/${guide.slug}/`}
+              class="group flex items-center gap-4 border border-neutral-100 rounded-lg px-5 py-3 hover:border-accent-soft hover:bg-white transition-colors"
+            >
+              <span class="font-display text-xl font-semibold text-neutral-300 group-hover:text-accent-soft w-8 shrink-0 transition-colors">
+                {String(guide.data.order).padStart(2, '0')}
+              </span>
+              <span class="font-semibold text-ink group-hover:text-accent transition-colors flex-1">
+                {guide.data.title}
+              </span>
+              <span class="text-xs text-neutral-500 shrink-0">{guide.data.est_read_time_minutes} min</span>
+              <span class="text-neutral-300 group-hover:text-accent transition-colors" aria-hidden="true">&rarr;</span>
+            </a>
+          </li>
+        ))}
+      </ol>
     </div>
   </section>
 </Base>
