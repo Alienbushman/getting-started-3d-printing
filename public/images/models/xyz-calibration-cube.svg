@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <rect width="800" height="600" fill="#F8FAFC"/>
+  <rect width="800" height="8" fill="#059669"/>
+  <rect width="800" height="8" y="592" fill="#059669"/>
+  <rect x="80" y="80" width="640" height="440" rx="8" fill="none" stroke="#059669" stroke-width="2" stroke-dasharray="12,6"/>
+  <text x="400" y="240" font-family="ui-monospace,monospace" font-size="72" fill="#059669" opacity="0.15" text-anchor="middle" font-weight="bold">STL</text>
+  <text x="400" y="290" font-family="ui-sans-serif,system-ui,sans-serif" font-size="26" fill="#1E293B" text-anchor="middle" font-weight="700">XYZ Calibration Cube</text>
+  <text x="400" y="328" font-family="ui-sans-serif,system-ui,sans-serif" font-size="16" fill="#64748B" text-anchor="middle">Dimensional accuracy</text>
+  <rect x="260" y="360" width="280" height="36" rx="4" fill="#059669" opacity="0.12"/>
+  <text x="400" y="383" font-family="ui-monospace,monospace" font-size="13" fill="#059669" text-anchor="middle">replace with render</text>
+  <text x="400" y="555" font-family="ui-monospace,monospace" font-size="11" fill="#94A3B8" text-anchor="middle">xyz-calibration-cube.svg — placeholder</text>
+</svg>
