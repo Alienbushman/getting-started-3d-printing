@@ -1,0 +1,228 @@
+# Model Library — getting-started-3d-printing
+# Curated 2026-05-16 for ticket [getting-started-3d-printing:006]
+# Sign-off: alienbushman
+#
+# LICENSE VERIFICATION STATUS
+#   confirmed   — license verified at source page during automated research
+#   probable    — strongly inferred from creator's other models; verify before use
+#   unverified  — automated scrape could not read badge; MUST verify at source_url before download
+#   tbd         — source model not yet selected; placeholder entry
+#
+# STLs: download to research/_staging/ (gitignored) during the model-entries ticket.
+# Final path: public/models/<slug>.stl
+#
+# CONSTRAINT: Never download a model until the license at source_url is manually confirmed.
+
+models:
+  - slug: 3dbenchy
+    title: "3DBenchy — The Jolly 3D Printing Torture Test"
+    author: "CreativeTools"
+    source_url: "https://www.printables.com/model/3161-3dbenchy-the-jolly-3d-printing-torture-test"
+    license: "Public Domain"
+    license_verify_status: confirmed
+    license_url: "https://www.printables.com/model/3161-3dbenchy-the-jolly-3d-printing-torture-test"
+    skill_taught: "Establish a print-quality baseline — curved surfaces, overhangs, bridges, and fine detail in one standardised print"
+    difficulty: 1
+    est_print_minutes: 100
+    recommended_layer_height_mm: 0.2
+    needs_supports: false
+    filament: PLA
+    bed_size_required_mm: "120x88"
+    notes: >
+      The industry-standard first print. Entered the public domain in 2024 (confirmed on Printables
+      model page). Print and compare results to community reference photos to identify issues.
+      ~29g PLA. No slicer tweaks needed beyond a default profile.
+    preview_image_url: TBD
+    stl_local_path: "public/models/3dbenchy.stl"
+
+  - slug: xyz-calibration-cube
+    title: "XYZ 10mm Calibration Cube"
+    author: "Halit"
+    source_url: "https://www.printables.com/model/32539-xyz-10mm-calibration-cube"
+    license: "CC 4.0 (variant unconfirmed — verify at source_url)"
+    license_verify_status: unverified
+    license_url: "https://www.printables.com/model/32539-xyz-10mm-calibration-cube"
+    skill_taught: "Measure X, Y, Z dimensional accuracy and tune e-steps or flow rate with calipers"
+    difficulty: 1
+    est_print_minutes: 20
+    recommended_layer_height_mm: 0.2
+    needs_supports: false
+    filament: PLA
+    bed_size_required_mm: "10x10"
+    notes: >
+      Print 3 copies. Measure all three axes with calipers; target 10.0 mm ± 0.2 mm.
+      If X/Y are off, adjust flow rate. If Z is off, re-check layer height / first-layer
+      Z-offset. License reported as CC 4.0 on source page; specific variant (BY/BY-SA/CC0)
+      not readable via automated scrape — verify manually before download.
+    preview_image_url: TBD
+    stl_local_path: "public/models/xyz-calibration-cube.stl"
+
+  - slug: low-poly-dog
+    title: "Low Poly Dog"
+    author: "Andrew_Sink (remix of EliasRosseau)"
+    source_url: "https://www.printables.com/model/35662-low-poly-dog"
+    license: "CC (variant unconfirmed — Thingiverse import; verify at source_url)"
+    license_verify_status: unverified
+    license_url: "https://www.printables.com/model/35662-low-poly-dog"
+    skill_taught: "No-support figurine print; demonstrates printing upside-down to eliminate support requirement"
+    difficulty: 2
+    est_print_minutes: 60
+    recommended_layer_height_mm: 0.2
+    needs_supports: false
+    filament: PLA
+    bed_size_required_mm: "80x60"
+    notes: >
+      MUST be printed legs-up (inverted orientation). This is the lesson: rotating the model
+      in the slicer eliminates all overhangs >45°. Good visual outcome motivates beginners
+      to think about print orientation before adding supports.
+    preview_image_url: TBD
+    stl_local_path: "public/models/low-poly-dog.stl"
+
+  - slug: cable-clip
+    title: "Simple Cable Clip"
+    author: "Jan-E.de"
+    source_url: "https://www.printables.com/model/125902-simple-cable-clip"
+    license: "CC (variant unconfirmed — verify at source_url)"
+    license_verify_status: unverified
+    license_url: "https://www.printables.com/model/125902-simple-cable-clip"
+    skill_taught: "Functional part with press-fit clearance; intro to why dimensional accuracy matters in practice"
+    difficulty: 2
+    est_print_minutes: 15
+    recommended_layer_height_mm: 0.2
+    needs_supports: false
+    filament: PLA
+    bed_size_required_mm: "40x20"
+    notes: >
+      Fast print (~15 min). Teaches the consequence of under/over extrusion: clips too tight
+      won't mount; clips too loose fall off. Good bridge from calibration into real-world use.
+    preview_image_url: TBD
+    stl_local_path: "public/models/cable-clip.stl"
+
+  - slug: snap-fit-box
+    title: "Storage Box with Snap-Fit Lid"
+    author: "Extrutim"
+    source_url: "https://www.printables.com/model/20961-storage-box-snap-fit-lid"
+    license: "CC (variant unconfirmed — verify at source_url)"
+    license_verify_status: unverified
+    license_url: "https://www.printables.com/model/20961-storage-box-snap-fit-lid"
+    skill_taught: "Snap-fit joint tolerance; two-part print that must click together — dimensional accuracy becomes tactile"
+    difficulty: 3
+    est_print_minutes: 123
+    recommended_layer_height_mm: 0.2
+    needs_supports: false
+    filament: PLA
+    bed_size_required_mm: "100x100"
+    notes: >
+      Print box + lid in two separate jobs (~25g PLA total; ~2h 3m per Printables).
+      If lid doesn't snap: re-tune horizontal expansion / flow rate. If it fits but falls
+      off: tighten tolerance. Use 'LidThight.stl' for snug fit, 'Lid_more_Space' if too tight.
+    preview_image_url: TBD
+    stl_local_path: "public/models/snap-fit-box.stl"
+
+  - slug: flexi-rex
+    title: "Flexi Rex with Stronger Links"
+    author: "DrLex (remix: Kirbs → airfish/zheng3)"
+    source_url: "https://www.printables.com/model/46241-flexi-rex-with-stronger-links"
+    license: "CC-BY-SA 4.0"
+    license_verify_status: confirmed
+    license_url: "https://www.printables.com/model/46241-flexi-rex-with-stronger-links"
+    skill_taught: "Print-in-place articulated joint; layers interlock to create movement without glue or assembly"
+    difficulty: 3
+    est_print_minutes: 140
+    recommended_layer_height_mm: 0.2
+    needs_supports: false
+    filament: PLA
+    bed_size_required_mm: "130x120"
+    notes: >
+      Print with 3 perimeters, 15% infill (~19g PLA). DO NOT touch or flex until fully cooled
+      — joints are fragile while warm. Flex gently side-to-side to free the joints.
+      A pre-sliced gcode and PrusaSlicer project file are provided for MK3 on the model page.
+      License: CC-BY-SA — attribution required; derivatives must use same license.
+    preview_image_url: TBD
+    stl_local_path: "public/models/flexi-rex.stl"
+
+  - slug: spiral-vase-rose
+    title: "Spiral Vase Rose"
+    author: "lytta"
+    source_url: "https://www.printables.com/model/131488-spiral-vase-rose"
+    license: "CC-BY (probable — creator's related model confirmed CC-BY; verify at source_url)"
+    license_verify_status: probable
+    license_url: "https://www.printables.com/model/131488-spiral-vase-rose"
+    skill_taught: "Vase mode (spiralize outer contour) slicer setting; single-wall continuous spiral with zero infill"
+    difficulty: 2
+    est_print_minutes: 196
+    recommended_layer_height_mm: 0.2
+    needs_supports: false
+    filament: PLA
+    bed_size_required_mm: "100x100"
+    notes: >
+      Enable 'Spiralize Outer Contour' (PrusaSlicer) or 'Vase Mode' (Bambu Studio) before slicing.
+      Set: 0 infill, 0 top layers, 1 perimeter, 1 bottom layer. The model itself becomes the wall.
+      ~3h 16m print. Shows beginners a completely different slicer mode beyond defaults.
+    preview_image_url: TBD
+    stl_local_path: "public/models/spiral-vase-rose.stl"
+
+  - slug: cute-mini-octopus
+    title: "Cute Mini Octopus"
+    author: "McGybeer"
+    source_url: "https://www.printables.com/model/178035-cute-mini-octopus"
+    license: "CC (variant unconfirmed — verify at source_url)"
+    license_verify_status: unverified
+    license_url: "https://www.printables.com/model/178035-cute-mini-octopus"
+    skill_taught: "Enabling and removing tree supports; comparing supported vs. unsupported results"
+    difficulty: 3
+    est_print_minutes: 90
+    recommended_layer_height_mm: 0.2
+    needs_supports: true
+    filament: PLA
+    bed_size_required_mm: "80x80"
+    notes: >
+      Model page provides two STL variants: with built-in supports and without. Download both.
+      Print the supported version first to practice support removal. Use tree supports (not
+      linear grid) — they leave a cleaner surface and remove more easily from curved geometry.
+    preview_image_url: TBD
+    stl_local_path: "public/models/cute-mini-octopus.stl"
+
+  - slug: nameplate
+    title: "Nameplate"
+    author: "Makkuro"
+    source_url: "https://www.printables.com/model/33277-nameplate"
+    license: "CC (variant unconfirmed — Thingiverse import; verify at source_url)"
+    license_verify_status: unverified
+    license_url: "https://www.printables.com/model/33277-nameplate"
+    skill_taught: "Embossed text clarity and fine XY detail; demonstrates resolution limits of 0.4mm nozzle at 0.2mm layer height"
+    difficulty: 2
+    est_print_minutes: 45
+    recommended_layer_height_mm: 0.15
+    needs_supports: false
+    filament: PLA
+    bed_size_required_mm: "80x30"
+    notes: >
+      Drop to 0.15mm layer height for sharper letter edges. Very small fonts (<5mm tall) will
+      lose detail at 0.4mm nozzle width. Print is fully flat — a good first test for a newly
+      levelled bed too.
+    preview_image_url: TBD
+    stl_local_path: "public/models/nameplate.stl"
+
+  - slug: two-color-coin
+    title: "Two-Color Calibration Coin (TBD)"
+    author: "TBD — not yet selected"
+    source_url: "TBD"
+    license: "TBD — verify before download"
+    license_verify_status: tbd
+    license_url: "TBD"
+    skill_taught: "Filament change mid-print via M600 or slicer color-change pause; produce a two-tone layered object"
+    difficulty: 3
+    est_print_minutes: 30
+    recommended_layer_height_mm: 0.2
+    needs_supports: false
+    filament: "PLA (two colours)"
+    bed_size_required_mm: "50x50"
+    notes: >
+      SELECTION NEEDED: search printables.com for a CC0 or CC-BY two-colour coin, token,
+      or yin-yang disc. The SKILL taught is M600 / filament-change pause — the model is
+      secondary. Must be flat, under 50mm diameter, no supports. Choose shortest print time
+      available. Suggested search: printables.com/search/models?q=two+color+coin&licenses=CC-BY,CC0
+      Verify license at the source page before committing.
+    preview_image_url: TBD
+    stl_local_path: "public/models/two-color-coin.stl"
