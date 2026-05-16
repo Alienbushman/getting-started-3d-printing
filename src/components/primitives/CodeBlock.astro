@@ -1,3 +1,39 @@
 ---
-// Primitive placeholder — implement per design/visual-identity.md
+interface Props {
+  code: string;
+  label?: string;
+}
+const { code, label } = Astro.props;
+const blockId = `cb-${Math.random().toString(36).slice(2, 8)}`;
 ---
+
+<div class="relative rounded-lg border border-neutral-100 bg-neutral-50 overflow-hidden my-4">
+  {label && (
+    <div class="px-4 py-1.5 border-b border-neutral-100 text-xs text-neutral-500 font-mono">{label}</div>
+  )}
+  <div class="relative">
+    <pre id={blockId} class="px-4 py-4 text-sm font-mono text-neutral-700 overflow-x-auto whitespace-pre leading-relaxed">{code}</pre>
+    <button
+      data-copy-target={blockId}
+      class="absolute top-2 right-2 text-xs border border-neutral-200 rounded px-2 py-1 bg-white text-neutral-500 hover:border-accent hover:text-accent transition-colors"
+      aria-label="Copy to clipboard"
+    >Copy</button>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-target]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const target = document.getElementById(btn.dataset.copyTarget!);
+      if (!target) return;
+      try {
+        await navigator.clipboard.writeText(target.textContent?.trim() ?? '');
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+      } catch {
+        btn.textContent = 'Failed';
+        setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+      }
+    });
+  });
+</script>

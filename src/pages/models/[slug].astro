@@ -1,5 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Callout from '../../components/primitives/Callout.astro';
+import CodeBlock from '../../components/primitives/CodeBlock.astro';
+import DifficultyMeter from '../../components/primitives/DifficultyMeter.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -12,15 +15,234 @@ export async function getStaticPaths() {
 
 const { model } = Astro.props;
 const { Content } = await model.render();
+
+const base = import.meta.env.BASE_URL;
+const basePath = base.replace(/\/$/, '');
+
+const h = Math.floor(model.data.est_print_time_minutes / 60);
+const m = model.data.est_print_time_minutes % 60;
+const timeStr = h > 0 ? (m > 0 ? `~${h}h ${m}m` : `~${h}h`) : `~${m}m`;
+
+const licenseUrls: Record<string, string> = {
+  'CC0-1.0':        'https://creativecommons.org/publicdomain/zero/1.0/',
+  'CC-BY-4.0':      'https://creativecommons.org/licenses/by/4.0/',
+  'CC-BY-SA-4.0':   'https://creativecommons.org/licenses/by-sa/4.0/',
+  'CC-BY-NC-SA-4.0':'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+};
+const licenseUrl = licenseUrls[model.data.license] ?? model.data.source_url;
+
+const defaultSettings: Record<string, string | number> = {
+  layer_height: `${model.data.layer_height_mm} mm`,
+  infill:       '15%',
+  perimeters:   '3',
+  supports:     model.data.supports_required ? 'yes' : 'none',
+  filament:     'PLA',
+  nozzle_temp:  '200°C',
+  bed_temp:     '60°C',
+  speed_print:  '50 mm/s',
+};
+const merged: Record<string, string | number> = {
+  ...defaultSettings,
+  ...(model.data.slicer_settings ?? {}),
+};
+const slicerText = Object.entries(merged)
+  .map(([k, v]) => `${(k + ':').padEnd(16)}${v}`)
+  .join('\n');
+
+const siteOrigin = (Astro.site?.href ?? '').replace(/\/$/, '');
+const ogImageUrl = `${siteOrigin}${basePath}${model.data.image}`;
+
+const stlHref = `${basePath}${model.data.stl_path}`;
+const threemfHref = model.data.threemf_path ? `${basePath}${model.data.threemf_path}` : null;
+const imgSrc = `${basePath}${model.data.image}`;
 ---
 
-<Base title={model.data.title} description={model.data.description}>
+<Base
+  title={model.data.title}
+  description={model.data.description}
+  ogImage={ogImageUrl}
+>
   <div class="mx-auto max-w-content px-4 md:px-8 lg:px-12 py-12">
-    <a href={`${import.meta.env.BASE_URL}models/`} class="text-sm text-neutral-500 hover:text-ink mb-6 inline-block">
+    <a href={`${base}models/`} class="text-sm text-neutral-500 hover:text-ink transition-colors inline-block mb-8">
       &larr; Back to gallery
     </a>
-    <h1 class="font-display text-3xl font-semibold text-ink mb-2">{model.data.title}</h1>
-    <p class="text-neutral-500 mb-8">Placeholder — full detail page in a downstream ticket.</p>
-    <Content />
+
+    <!-- Hero -->
+    <div class="grid gap-8 md:grid-cols-[340px_1fr] lg:grid-cols-[400px_1fr]">
+      <div class="aspect-square bg-neutral-50 rounded-lg overflow-hidden border border-neutral-100">
+        <img
+          src={imgSrc}
+          alt={model.data.title}
+          class="w-full h-full object-cover"
+          width="400"
+          height="400"
+        />
+      </div>
+
+      <div class="flex flex-col gap-4">
+        <h1 class="font-display text-3xl font-semibold text-ink leading-tight">{model.data.title}</h1>
+
+        <DifficultyMeter difficulty={model.data.difficulty} />
+
+        <p class="text-sm text-neutral-500 leading-relaxed">{model.data.description}</p>
+
+        {(model.data.skill_tags ?? []).length > 0 && (
+          <div class="flex flex-wrap gap-2">
+            {(model.data.skill_tags ?? []).map((tag) => (
+              <span class="text-xs border border-neutral-100 text-neutral-500 rounded px-2 py-0.5">
+                {tag.replace(/-/g, ' ')}
+              </span>
+            ))}
+          </div>
+        )}
+
+        <div class="flex flex-wrap gap-3 mt-1">
+          <a
+            href={stlHref}
+            download
+            class="inline-block bg-accent text-white text-sm font-semibold px-5 py-2.5 rounded hover:opacity-90 transition-opacity"
+          >
+            Download STL
+          </a>
+          {threemfHref && (
+            <a
+              href={threemfHref}
+              download
+              class="inline-block border border-neutral-300 text-ink text-sm font-semibold px-5 py-2.5 rounded hover:bg-neutral-50 transition-colors"
+            >
+              Download 3MF
+            </a>
+          )}
+        </div>
+
+        <dl class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm pt-4 border-t border-neutral-100 mt-1">
+          <div>
+            <dt class="text-xs text-neutral-400 uppercase tracking-wide mb-0.5">Author</dt>
+            <dd class="text-ink">{model.data.author}</dd>
+          </div>
+          <div>
+            <dt class="text-xs text-neutral-400 uppercase tracking-wide mb-0.5">License</dt>
+            <dd>
+              <a href={licenseUrl} rel="noopener external" class="text-accent hover:opacity-80">
+                {model.data.license}
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt class="text-xs text-neutral-400 uppercase tracking-wide mb-0.5">Print time</dt>
+            <dd class="text-ink">{timeStr}</dd>
+          </div>
+          <div>
+            <dt class="text-xs text-neutral-400 uppercase tracking-wide mb-0.5">Layer height</dt>
+            <dd class="text-ink">{model.data.layer_height_mm} mm</dd>
+          </div>
+          <div>
+            <dt class="text-xs text-neutral-400 uppercase tracking-wide mb-0.5">Supports</dt>
+            <dd class="text-ink">{model.data.supports_required ? 'Required' : 'None'}</dd>
+          </div>
+          <div>
+            <dt class="text-xs text-neutral-400 uppercase tracking-wide mb-0.5">Filament</dt>
+            <dd class="text-ink">PLA</dd>
+          </div>
+        </dl>
+
+        <a
+          href={model.data.source_url}
+          rel="noopener external"
+          class="text-xs text-neutral-400 hover:text-accent transition-colors"
+        >
+          View source on Printables &rarr;
+        </a>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="prose-guide mt-12 border-t border-neutral-100 pt-10">
+      <Content />
+    </div>
+
+    <!-- Slicer settings -->
+    <section class="mt-10" aria-labelledby="slicer-heading">
+      <h2 id="slicer-heading" class="font-display text-xl font-semibold text-ink mb-2">
+        Recommended slicer settings
+      </h2>
+      <p class="text-sm text-neutral-500 mb-1">Paste into PrusaSlicer or OrcaSlicer — adjust to taste.</p>
+      <CodeBlock code={slicerText} label="slicer profile (plain text)" />
+    </section>
+
+    <!-- Attribution -->
+    <div class="mt-8">
+      <Callout variant="info" title="Attribution & license">
+        <p>
+          Model by <strong>{model.data.author}</strong>.
+          Released under{' '}
+          <a href={licenseUrl} rel="noopener external" class="text-accent underline underline-offset-2 hover:opacity-80">
+            {model.data.license}
+          </a>.
+        </p>
+        <p class="mt-1">
+          <a href={model.data.source_url} rel="noopener external" class="text-accent underline underline-offset-2 hover:opacity-80">
+            Original source on Printables &rarr;
+          </a>
+        </p>
+      </Callout>
+    </div>
   </div>
 </Base>
+
+<style>
+  .prose-guide {
+    max-width: 65ch;
+    color: #1A1A1A;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+  .prose-guide h2 {
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: #1A1A1A;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+  .prose-guide h3 {
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: #1A1A1A;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  .prose-guide p {
+    margin-bottom: 1rem;
+    color: #2A2724;
+  }
+  .prose-guide ul,
+  .prose-guide ol {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+  }
+  .prose-guide li {
+    margin-bottom: 0.4rem;
+    color: #2A2724;
+  }
+  .prose-guide ul li {
+    list-style-type: disc;
+  }
+  .prose-guide ol li {
+    list-style-type: decimal;
+  }
+  .prose-guide strong {
+    font-weight: 600;
+    color: #1A1A1A;
+  }
+  .prose-guide a {
+    color: #E85D2F;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .prose-guide a:hover {
+    opacity: 0.8;
+  }
+</style>

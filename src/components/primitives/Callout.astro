@@ -1,3 +1,20 @@
 ---
-// Primitive placeholder — implement per design/visual-identity.md
+interface Props {
+  variant?: 'info' | 'warn' | 'danger';
+  title?: string;
+}
+const { variant = 'info', title } = Astro.props;
+
+const cls = {
+  info:   'border-accent bg-accent-soft text-ink',
+  warn:   'border-yellow-400 bg-yellow-50 text-yellow-900',
+  danger: 'border-red-400 bg-red-50 text-red-900',
+}[variant];
+
+const defaultTitle = { info: 'Note', warn: 'Warning', danger: 'Caution' }[variant];
 ---
+
+<aside class={`border-l-4 rounded-r-md px-4 py-3 my-4 text-sm leading-relaxed ${cls}`}>
+  <p class="font-semibold mb-1">{title ?? defaultTitle}</p>
+  <slot />
+</aside>

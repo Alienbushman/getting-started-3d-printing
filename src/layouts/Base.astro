@@ -7,9 +7,10 @@ import '@fontsource/inter/600.css';
 interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
 }
 
-const { title, description = 'Beginner-friendly 3D printing guides and printable models.' } = Astro.props;
+const { title, description = 'Beginner-friendly 3D printing guides and printable models.', ogImage } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const pathname = Astro.url.pathname;
 const navActive = (segment: string) =>
@@ -23,9 +24,16 @@ const navActive = (segment: string) =>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    <meta property="og:title" content={`${title} — getting-started-3d-printing`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogImage && <meta name="twitter:card" content="summary_large_image" />}
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <link rel="icon" href={`${base}favicon.ico`} />
     <title>{title} — getting-started-3d-printing</title>
+    <slot name="head" />
   </head>
   <body class="bg font-sans text-ink">
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-accent focus:text-white focus:px-3 focus:py-1 focus:rounded">

@@ -1,3 +1,15 @@
 ---
-// Primitive placeholder — implement per design/visual-identity.md
+interface Props {
+  difficulty: 'beginner' | 'intermediate';
+}
+const { difficulty } = Astro.props;
+const filled = difficulty === 'beginner' ? 2 : 4;
+const total = 5;
 ---
+
+<div class="flex items-center gap-1.5" aria-label={`Difficulty: ${difficulty}`} role="img">
+  {Array.from({ length: total }, (_, i) => (
+    <span class={`inline-block w-2.5 h-2.5 rounded-full ${i < filled ? 'bg-accent' : 'bg-neutral-200'}`}></span>
+  ))}
+  <span class="ml-1 text-xs text-neutral-500 capitalize">{difficulty}</span>
+</div>
