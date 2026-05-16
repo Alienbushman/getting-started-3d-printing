@@ -38,6 +38,8 @@ const glossary = defineCollection({
     term: z.string(),
     definition: z.string(),
     image: z.string().optional(),
+    see_also: z.array(z.string()).optional(),
+    gotcha: z.string().optional(),
   }),
 });
 
