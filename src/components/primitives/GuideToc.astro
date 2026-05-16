@@ -1,3 +1,63 @@
 ---
-// Primitive placeholder — implement per design/visual-identity.md
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+const h2s = headings.filter((h) => h.depth === 2);
 ---
+
+<nav class="guide-toc" aria-label="Table of contents">
+  <p class="text-xs font-semibold text-neutral-500 uppercase tracking-wide mb-3">On this page</p>
+  <ol class="space-y-1">
+    {h2s.map((h) => (
+      <li>
+        <a
+          href={`#${h.slug}`}
+          class="toc-link block text-sm text-neutral-500 hover:text-ink py-0.5 border-l-2 border-neutral-100 pl-3 transition-colors"
+          data-heading={h.slug}
+        >
+          {h.text}
+        </a>
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<script>
+  const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.toc-link');
+  const headingEls = Array.from(tocLinks).map((link) => {
+    const id = link.dataset.heading!;
+    return document.getElementById(id);
+  }).filter(Boolean) as HTMLElement[];
+
+  if (headingEls.length > 0 && 'IntersectionObserver' in window) {
+    let activeId: string | null = null;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            activeId = entry.target.id;
+          }
+        }
+        tocLinks.forEach((link) => {
+          const isActive = link.dataset.heading === activeId;
+          link.classList.toggle('text-accent', isActive);
+          link.classList.toggle('border-accent', isActive);
+          link.classList.toggle('text-neutral-500', !isActive);
+          link.classList.toggle('border-neutral-100', !isActive);
+        });
+      },
+      { rootMargin: '0px 0px -60% 0px', threshold: 0 }
+    );
+
+    headingEls.forEach((el) => observer.observe(el));
+  }
+</script>
