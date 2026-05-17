@@ -3,7 +3,7 @@
 # Sign-off: alienbushman
 #
 # LICENSE VERIFICATION STATUS
-#   confirmed   — license verified at source page during automated research
+#   confirmed   — license verified at source page or via authoritative API
 #   probable    — strongly inferred from creator's other models; verify before use
 #   unverified  — automated scrape could not read badge; MUST verify at source_url before download
 #   tbd         — source model not yet selected; placeholder entry
@@ -12,6 +12,30 @@
 # Final path: public/models/<slug>.stl
 #
 # CONSTRAINT: Never download a model until the license at source_url is manually confirmed.
+#
+# UPDATE 2026-05-17 (verification session, follow-up to [getting-started-3d-printing:028])
+#   All 7 unverified Printables URLs licence-verified via api.printables.com GraphQL.
+#   Result: 3 are CC-BY / CC-BY-SA (safe to use as-is): xyz-calibration-cube, low-poly-dog, spiral-vase-rose.
+#   4 are CC-BY-NC-* (non-commercial): cable-clip, snap-fit-box, cute-mini-octopus, nameplate.
+#     Marked `commercial_use: false`. The site is currently a non-commercial portfolio — keeping these
+#     is consistent with that stance, but if monetisation is ever desired these must be swapped.
+#     Suggested CC-BY-only swaps already scouted: Davis County Library "Cute Mini Octopus v2"
+#     (Thingiverse thing:5779691, CC-BY 4.0) replaces McGybeer's NC original cleanly.
+#   STLs downloaded (all 10, in research/_staging/ — gitignored; see research/STL_DOWNLOAD_MANIFEST.md):
+#     3dbenchy.stl              (11.3 MB)    PD — CreativeTools/3DBenchy GitHub
+#     xyz-calibration-cube.stl  (6.9 KB)     CC-BY 4.0 — Printables CDN
+#     low-poly-dog.stl          (94 KB)      CC-BY-SA 4.0 — Printables CDN
+#     cable-clip.stl            (125 KB)     CC-BY-NC 4.0 — Printables CDN
+#     snap-fit-box.stl          (71 KB)      CC-BY-NC-SA 4.0 — Printables CDN
+#     flexi-rex.stl             (745 KB)     CC-BY-SA 4.0 — DrLex0/print3D-FlexiRex GitHub
+#     spiral-vase-rose.stl      (132 MB!)    CC-BY 4.0 — Printables CDN (over-tessellated — see manifest)
+#     cute-mini-octopus.stl     (11.2 MB)    CC-BY-NC-SA 4.0 — Printables CDN
+#     nameplate.stl             (337 KB)     CC-BY-NC-SA 4.0 — Printables CDN
+#     two-color-coin.stl        (548 KB)     CC0/PD — Printables CDN (SnobbishGoose dual-extrusion coin)
+#   Pending decisions in [getting-started-3d-printing:029]:
+#     - spiral-vase-rose 132 MB is too big to ship inline; swap or decimate or use git LFS.
+#     - 4 NC models stay if the site stays non-commercial.
+#     - two-color-coin source CHANGED from TBD to SnobbishGoose (PD); content/markdown body needs a content pass.
 
 models:
   - slug: 3dbenchy
@@ -39,8 +63,9 @@ models:
     title: "XYZ 10mm Calibration Cube"
     author: "Halit"
     source_url: "https://www.printables.com/model/32539-xyz-10mm-calibration-cube"
-    license: "CC 4.0 (variant unconfirmed — verify at source_url)"
-    license_verify_status: unverified
+    license: "CC-BY 4.0"
+    license_verify_status: confirmed
+    license_verified_via: "api.printables.com GraphQL 2026-05-17"
     license_url: "https://www.printables.com/model/32539-xyz-10mm-calibration-cube"
     skill_taught: "Measure X, Y, Z dimensional accuracy and tune e-steps or flow rate with calipers"
     difficulty: 1
@@ -61,8 +86,9 @@ models:
     title: "Low Poly Dog"
     author: "Andrew_Sink (remix of EliasRosseau)"
     source_url: "https://www.printables.com/model/35662-low-poly-dog"
-    license: "CC (variant unconfirmed — Thingiverse import; verify at source_url)"
-    license_verify_status: unverified
+    license: "CC-BY-SA 4.0"
+    license_verify_status: confirmed
+    license_verified_via: "api.printables.com GraphQL 2026-05-17"
     license_url: "https://www.printables.com/model/35662-low-poly-dog"
     skill_taught: "No-support figurine print; demonstrates printing upside-down to eliminate support requirement"
     difficulty: 2
@@ -82,8 +108,10 @@ models:
     title: "Simple Cable Clip"
     author: "Jan-E.de"
     source_url: "https://www.printables.com/model/125902-simple-cable-clip"
-    license: "CC (variant unconfirmed — verify at source_url)"
-    license_verify_status: unverified
+    license: "CC-BY-NC 4.0"
+    license_verify_status: confirmed
+    license_verified_via: "api.printables.com GraphQL 2026-05-17"
+    commercial_use: false
     license_url: "https://www.printables.com/model/125902-simple-cable-clip"
     skill_taught: "Functional part with press-fit clearance; intro to why dimensional accuracy matters in practice"
     difficulty: 2
@@ -102,8 +130,10 @@ models:
     title: "Storage Box with Snap-Fit Lid"
     author: "Extrutim"
     source_url: "https://www.printables.com/model/20961-storage-box-snap-fit-lid"
-    license: "CC (variant unconfirmed — verify at source_url)"
-    license_verify_status: unverified
+    license: "CC-BY-NC-SA 4.0"
+    license_verify_status: confirmed
+    license_verified_via: "api.printables.com GraphQL 2026-05-17"
+    commercial_use: false
     license_url: "https://www.printables.com/model/20961-storage-box-snap-fit-lid"
     skill_taught: "Snap-fit joint tolerance; two-part print that must click together — dimensional accuracy becomes tactile"
     difficulty: 3
@@ -145,8 +175,9 @@ models:
     title: "Spiral Vase Rose"
     author: "lytta"
     source_url: "https://www.printables.com/model/131488-spiral-vase-rose"
-    license: "CC-BY (probable — creator's related model confirmed CC-BY; verify at source_url)"
-    license_verify_status: probable
+    license: "CC-BY 4.0"
+    license_verify_status: confirmed
+    license_verified_via: "api.printables.com GraphQL 2026-05-17"
     license_url: "https://www.printables.com/model/131488-spiral-vase-rose"
     skill_taught: "Vase mode (spiralize outer contour) slicer setting; single-wall continuous spiral with zero infill"
     difficulty: 2
@@ -166,8 +197,10 @@ models:
     title: "Cute Mini Octopus"
     author: "McGybeer"
     source_url: "https://www.printables.com/model/178035-cute-mini-octopus"
-    license: "CC (variant unconfirmed — verify at source_url)"
-    license_verify_status: unverified
+    license: "CC-BY-NC-SA 4.0"
+    license_verify_status: confirmed
+    license_verified_via: "api.printables.com GraphQL 2026-05-17"
+    commercial_use: false
     license_url: "https://www.printables.com/model/178035-cute-mini-octopus"
     skill_taught: "Enabling and removing tree supports; comparing supported vs. unsupported results"
     difficulty: 3
@@ -187,8 +220,10 @@ models:
     title: "Nameplate"
     author: "Makkuro"
     source_url: "https://www.printables.com/model/33277-nameplate"
-    license: "CC (variant unconfirmed — Thingiverse import; verify at source_url)"
-    license_verify_status: unverified
+    license: "CC-BY-NC-SA 4.0"
+    license_verify_status: confirmed
+    license_verified_via: "api.printables.com GraphQL 2026-05-17"
+    commercial_use: false
     license_url: "https://www.printables.com/model/33277-nameplate"
     skill_taught: "Embossed text clarity and fine XY detail; demonstrates resolution limits of 0.4mm nozzle at 0.2mm layer height"
     difficulty: 2
@@ -205,24 +240,24 @@ models:
     stl_local_path: "public/models/nameplate.stl"
 
   - slug: two-color-coin
-    title: "Two-Color Calibration Coin (TBD)"
-    author: "TBD — not yet selected"
-    source_url: "TBD"
-    license: "TBD — verify before download"
-    license_verify_status: tbd
-    license_url: "TBD"
+    title: "Dual Extrusion Calibration Coin"
+    author: "SnobbishGoose"
+    source_url: "https://www.printables.com/model/346994-dual-extrusion-calibration-coin"
+    license: "CC0 / Public Domain"
+    license_verify_status: confirmed
+    license_verified_via: "api.printables.com GraphQL 2026-05-17"
+    license_url: "https://www.printables.com/model/346994-dual-extrusion-calibration-coin"
     skill_taught: "Filament change mid-print via M600 or slicer color-change pause; produce a two-tone layered object"
     difficulty: 3
     est_print_minutes: 30
     recommended_layer_height_mm: 0.2
     needs_supports: false
     filament: "PLA (two colours)"
-    bed_size_required_mm: "50x50"
+    bed_size_required_mm: "65x65"
     notes: >
-      SELECTION NEEDED: search printables.com for a CC0 or CC-BY two-colour coin, token,
-      or yin-yang disc. The SKILL taught is M600 / filament-change pause — the model is
-      secondary. Must be flat, under 50mm diameter, no supports. Choose shortest print time
-      available. Suggested search: printables.com/search/models?q=two+color+coin&licenses=CC-BY,CC0
-      Verify license at the source page before committing.
+      63.5mm diameter coin designed for tuning where the colour-change line lands on your
+      specific printer + filament combination. Slice with default profile, add a colour-change
+      G-code at the height you want the transition, then load the second colour when the
+      printer pauses. Original by SnobbishGoose, released to the public domain on Printables.
     preview_image_url: TBD
     stl_local_path: "public/models/two-color-coin.stl"
