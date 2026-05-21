@@ -53,8 +53,11 @@ const slicerText = Object.entries(merged)
 const siteOrigin = (Astro.site?.href ?? '').replace(/\/$/, '');
 const ogImageUrl = `${siteOrigin}${basePath}${model.data.image}`;
 
-const stlHref = `${basePath}${model.data.stl_path}`;
-const threemfHref = model.data.threemf_path ? `${basePath}${model.data.threemf_path}` : null;
+const sourceHost = new URL(model.data.source_url).hostname.replace(/^www\./, '');
+const sourceLabel =
+  sourceHost === 'printables.com' ? 'Printables'
+  : sourceHost === 'github.com' ? 'GitHub'
+  : sourceHost;
 const imgSrc = `${basePath}${model.data.image}`;
 ---
 
@@ -97,23 +100,18 @@ const imgSrc = `${basePath}${model.data.image}`;
           </div>
         )}
 
-        <div class="flex flex-wrap gap-3 mt-1">
+        <div class="flex flex-col gap-2 mt-1">
           <a
-            href={stlHref}
-            download
-            class="inline-block bg-accent text-white text-sm font-semibold px-5 py-2.5 rounded hover:opacity-90 transition-opacity"
+            href={model.data.source_url}
+            rel="noopener external"
+            target="_blank"
+            class="inline-block bg-accent text-white text-sm font-semibold px-5 py-2.5 rounded hover:opacity-90 transition-opacity w-fit"
           >
-            Download STL
+            Get the STL on {sourceLabel} &rarr;
           </a>
-          {threemfHref && (
-            <a
-              href={threemfHref}
-              download
-              class="inline-block border border-neutral-300 text-ink text-sm font-semibold px-5 py-2.5 rounded hover:bg-neutral-50 transition-colors"
-            >
-              Download 3MF
-            </a>
-          )}
+          <p class="text-xs text-neutral-500">
+            Opens the author's page on {sourceHost}. Free download; some sources may ask you to sign in.
+          </p>
         </div>
 
         <dl class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm pt-4 border-t border-neutral-100 mt-1">
@@ -155,13 +153,6 @@ const imgSrc = `${basePath}${model.data.image}`;
           </div>
         </dl>
 
-        <a
-          href={model.data.source_url}
-          rel="noopener external"
-          class="text-xs text-neutral-400 hover:text-accent transition-colors"
-        >
-          View source on Printables &rarr;
-        </a>
       </div>
     </div>
 
@@ -191,7 +182,7 @@ const imgSrc = `${basePath}${model.data.image}`;
         </p>
         <p class="mt-1">
           <a href={model.data.source_url} rel="noopener external" class="text-accent underline underline-offset-2 hover:opacity-80">
-            Original source on Printables &rarr;
+            Original source on {sourceLabel} &rarr;
           </a>
         </p>
       </Callout>
