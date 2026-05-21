@@ -7,9 +7,10 @@ interface Props {
   est_print_time_minutes: number;
   skill_tags?: string[];
   description: string;
+  commercial_use?: boolean;
 }
 
-const { title, slug, image, difficulty, est_print_time_minutes, skill_tags = [], description } = Astro.props;
+const { title, slug, image, difficulty, est_print_time_minutes, skill_tags = [], description, commercial_use = true } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const imgSrc = `${base.slice(0, -1)}${image}`;
 
@@ -43,6 +44,14 @@ const timeStr = h > 0 ? (m > 0 ? `~${h}h ${m}m` : `~${h}h`) : `~${m}m`;
         {difficulty}
       </span>
       <span class="text-xs text-neutral-500">{timeStr}</span>
+      {commercial_use === false && (
+        <span
+          class="text-xs px-2 py-0.5 rounded font-semibold bg-yellow-50 text-yellow-900 border border-yellow-300"
+          aria-label="Non-commercial use only"
+        >
+          Non-commercial
+        </span>
+      )}
       {skill_tags.slice(0, 2).map((tag) => (
         <span class="text-xs border border-neutral-100 text-neutral-500 rounded px-2 py-0.5">
           {tag.replace(/-/g, ' ')}

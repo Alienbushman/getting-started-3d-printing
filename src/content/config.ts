@@ -8,6 +8,7 @@ const models = defineCollection({
     stl_path: z.string(),
     threemf_path: z.string().optional(),
     license: z.string(),
+    commercial_use: z.boolean().default(true),
     author: z.string(),
     source_url: z.string().url(),
     difficulty: z.enum(['beginner', 'intermediate']),

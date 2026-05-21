@@ -2,7 +2,7 @@
 title: "Low Poly Dog"
 image: "/images/models/low-poly-dog.svg"
 stl_path: "/models/low-poly-dog.stl"
-license: "CC-BY-4.0"
+license: "CC-BY-SA-4.0"
 author: "Andrew_Sink (remix of EliasRosseau)"
 source_url: "https://www.printables.com/model/35662-low-poly-dog"
 difficulty: "beginner"

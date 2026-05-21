@@ -2,7 +2,8 @@
 title: "Simple Cable Clip"
 image: "/images/models/cable-clip.svg"
 stl_path: "/models/cable-clip.stl"
-license: "CC-BY-4.0"
+license: "CC-BY-NC-4.0"
+commercial_use: false
 author: "Jan-E.de"
 source_url: "https://www.printables.com/model/125902-simple-cable-clip"
 difficulty: "beginner"

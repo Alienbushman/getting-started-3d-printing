@@ -2,7 +2,8 @@
 title: "Nameplate"
 image: "/images/models/nameplate.svg"
 stl_path: "/models/nameplate.stl"
-license: "CC-BY-4.0"
+license: "CC-BY-NC-SA-4.0"
+commercial_use: false
 author: "Makkuro"
 source_url: "https://www.printables.com/model/33277-nameplate"
 difficulty: "beginner"

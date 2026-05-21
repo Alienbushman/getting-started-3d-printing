@@ -27,6 +27,7 @@ const licenseUrls: Record<string, string> = {
   'CC0-1.0':        'https://creativecommons.org/publicdomain/zero/1.0/',
   'CC-BY-4.0':      'https://creativecommons.org/licenses/by/4.0/',
   'CC-BY-SA-4.0':   'https://creativecommons.org/licenses/by-sa/4.0/',
+  'CC-BY-NC-4.0':   'https://creativecommons.org/licenses/by-nc/4.0/',
   'CC-BY-NC-SA-4.0':'https://creativecommons.org/licenses/by-nc-sa/4.0/',
 };
 const licenseUrl = licenseUrls[model.data.license] ?? model.data.source_url;
@@ -122,10 +123,18 @@ const imgSrc = `${basePath}${model.data.image}`;
           </div>
           <div>
             <dt class="text-xs text-neutral-400 uppercase tracking-wide mb-0.5">License</dt>
-            <dd>
+            <dd class="flex flex-wrap items-center gap-2">
               <a href={licenseUrl} rel="noopener external" class="text-accent hover:opacity-80">
                 {model.data.license}
               </a>
+              {model.data.commercial_use === false && (
+                <span
+                  class="text-xs px-2 py-0.5 rounded font-semibold bg-yellow-50 text-yellow-900 border border-yellow-300"
+                  aria-label="Non-commercial use only — see license for terms"
+                >
+                  Non-commercial only
+                </span>
+              )}
             </dd>
           </div>
           <div>

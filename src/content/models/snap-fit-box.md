@@ -2,7 +2,8 @@
 title: "Storage Box with Snap-Fit Lid"
 image: "/images/models/snap-fit-box.svg"
 stl_path: "/models/snap-fit-box.stl"
-license: "CC-BY-4.0"
+license: "CC-BY-NC-SA-4.0"
+commercial_use: false
 author: "Extrutim"
 source_url: "https://www.printables.com/model/20961-storage-box-snap-fit-lid"
 difficulty: "intermediate"

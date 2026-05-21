@@ -2,7 +2,8 @@
 title: "Cute Mini Octopus"
 image: "/images/models/cute-mini-octopus.svg"
 stl_path: "/models/cute-mini-octopus.stl"
-license: "CC-BY-4.0"
+license: "CC-BY-NC-SA-4.0"
+commercial_use: false
 author: "McGybeer"
 source_url: "https://www.printables.com/model/178035-cute-mini-octopus"
 difficulty: "intermediate"

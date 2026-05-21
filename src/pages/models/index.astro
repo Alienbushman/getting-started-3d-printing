@@ -107,6 +107,7 @@ function fmtTime(minutes: number): string {
           data-supports={model.data.supports_required ? 'yes' : 'no'}
           data-time={timeBucket(model.data.est_print_time_minutes)}
           data-minutes={model.data.est_print_time_minutes}
+          data-commercial={model.data.commercial_use === false ? 'no' : 'yes'}
           data-title={model.data.title}
         >
           <a
@@ -136,6 +137,14 @@ function fmtTime(minutes: number): string {
                 <span class="text-xs text-neutral-500">{fmtTime(model.data.est_print_time_minutes)}</span>
                 {!model.data.supports_required && (
                   <span class="text-xs border border-neutral-100 text-neutral-500 rounded px-2 py-0.5">no supports</span>
+                )}
+                {model.data.commercial_use === false && (
+                  <span
+                    class="text-xs px-2 py-0.5 rounded font-semibold bg-yellow-50 text-yellow-900 border border-yellow-300"
+                    aria-label="Non-commercial use only"
+                  >
+                    Non-commercial
+                  </span>
                 )}
                 {(model.data.skill_tags ?? []).slice(0, 1).map((tag) => (
                   <span class="text-xs border border-neutral-100 text-neutral-500 rounded px-2 py-0.5">{tag.replace(/-/g, ' ')}</span>
