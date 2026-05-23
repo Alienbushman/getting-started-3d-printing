@@ -2,7 +2,7 @@
 
 Beginner-friendly 3D printing guides and printable models. Deployed at `alienbushman.com/3d-printing/`.
 
-**Stack:** Astro 5 · Tailwind CSS · static output · nginx
+**Stack:** Astro 5 · Tailwind CSS · Three.js (STL viewer) · Pagefind (static search) · nginx (Docker)
 
 ## Local dev
 
@@ -39,6 +39,18 @@ Smaller artefact, no re-distribution attribution burden in this repo, fresh file
 if authors update their models, and authors get the engagement on their own page.
 Source links are inert if the upstream model is taken down — that's a real cost
 and the trade-off accepted for v0.1.1.
+
+## What's in v0.2.0
+
+- `:039` — **Pagefind site search** at `/search/`. Static index built into the
+  Docker image at deploy time; covers models, guides, and glossary.
+- `:040` — **Beginner path** at `/start/`. 10 models in numbered curriculum order
+  via a new `learning_order` schema field; each step calls out the skill it teaches.
+- `:041` — **Failure diagnostic** at `/diagnose/`. Symptom-picker UI on top of
+  the common-failures guide; pick what you see, get the focused fix sequence.
+- `:042` — **Three.js STL viewer** on every detail page. Drag-orbit / scroll-zoom
+  preview, loaded from decimated viewer-quality copies in `public/models/` (the
+  primary download CTA still goes to the upstream source).
 
 ## What's in v0.1.1
 
