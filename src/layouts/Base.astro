@@ -47,6 +47,7 @@ const navActive = (segment: string) =>
         </a>
         <nav aria-label="Site navigation">
           <ul class="flex gap-6 text-sm text-neutral-500">
+            <li><a href={`${base}start/`} class={`hover:text-ink transition-colors ${navActive('start')}`}>Start</a></li>
             <li><a href={`${base}models/`} class={`hover:text-ink transition-colors ${navActive('models')}`}>Models</a></li>
             <li><a href={`${base}guide/`} class={`hover:text-ink transition-colors ${navActive('guide')}`}>Guide</a></li>
             <li><a href={`${base}glossary/`} class={`hover:text-ink transition-colors ${navActive('glossary')}`}>Glossary</a></li>

@@ -13,6 +13,8 @@ layer_height_mm: 0.2
 description: "A small octopus figurine with curving tentacles. The model page offers a version with built-in tree supports — practice enabling, generating, and removing supports."
 skill_tags: ["supports", "figurine", "support-removal"]
 featured: true
+learning_order: 8
+learning_skill: "Generate, print, and remove tree supports cleanly"
 ---
 
 ## Why print this

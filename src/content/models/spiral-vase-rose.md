@@ -12,6 +12,8 @@ layer_height_mm: 0.2
 description: "A rose-shaped vase printed in vase mode — a single continuous spiral wall with no infill. Teaches the spiralize/vase mode slicer setting."
 skill_tags: ["vase-mode", "decorative", "no-supports", "no-infill"]
 featured: true
+learning_order: 7
+learning_skill: "Use vase mode — a slicer setting that prints one continuous spiral"
 ---
 
 ## Why print this

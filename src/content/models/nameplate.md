@@ -13,6 +13,8 @@ layer_height_mm: 0.15
 description: "A flat nameplate with embossed text. Drop to 0.15 mm layer height for sharper letter edges and learn the resolution limits of a 0.4 mm nozzle."
 skill_tags: ["fine-detail", "no-supports", "flat-print"]
 featured: false
+learning_order: 9
+learning_skill: "Drop layer height for sharper fine detail"
 ---
 
 ## Why print this

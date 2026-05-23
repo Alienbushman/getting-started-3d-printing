@@ -20,6 +20,8 @@ const models = defineCollection({
     steps: z.array(z.string()).optional(),
     skill_tags: z.array(z.string()).optional(),
     featured: z.boolean().optional(),
+    learning_order: z.number().int().min(1).max(10).optional(),
+    learning_skill: z.string().optional(),
   }),
 });
 

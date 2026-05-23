@@ -13,6 +13,8 @@ layer_height_mm: 0.2
 description: "A two-part storage box with a snap-fit lid. A hands-on lesson in snap joint tolerances — the lid either clicks or it doesn't."
 skill_tags: ["functional", "no-supports", "snap-fit", "tolerance"]
 featured: false
+learning_order: 5
+learning_skill: "Tune snap-fit tolerance across two separately-printed parts"
 ---
 
 ## Why print this

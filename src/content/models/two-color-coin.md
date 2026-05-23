@@ -12,6 +12,8 @@ layer_height_mm: 0.2
 description: "A 63.5 mm flat coin designed to tune where the colour-change line lands on a single-extruder printer. Teaches the M600 colour-change workflow without a multi-material rig."
 skill_tags: ["filament-change", "two-color", "m600"]
 featured: false
+learning_order: 10
+learning_skill: "Swap filament mid-print to produce a two-tone object"
 ---
 
 ## Why print this

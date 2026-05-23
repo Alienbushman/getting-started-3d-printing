@@ -12,6 +12,8 @@ layer_height_mm: 0.2
 description: "An articulated T-Rex that flexes and moves without glue or assembly. The joints are printed in place — a showcase of what FDM can do that injection moulding can't."
 skill_tags: ["print-in-place", "articulated", "no-supports"]
 featured: true
+learning_order: 6
+learning_skill: "Print articulated joints in place — FDM's superpower"
 ---
 
 ## Why print this

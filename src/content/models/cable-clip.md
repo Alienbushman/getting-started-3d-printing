@@ -13,6 +13,8 @@ layer_height_mm: 0.2
 description: "A functional cable management clip with a press-fit snap. Teaches why dimensional accuracy matters for parts that need to fit real objects."
 skill_tags: ["functional", "no-supports", "press-fit"]
 featured: false
+learning_order: 4
+learning_skill: "Print a functional part where dimensional accuracy is tactile"
 ---
 
 ## Why print this

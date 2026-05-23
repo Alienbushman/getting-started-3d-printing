@@ -12,6 +12,8 @@ layer_height_mm: 0.2
 description: "The industry-standard first print. Tests curved surfaces, overhangs, bridges, and fine detail all in one compact boat-shaped model."
 skill_tags: ["first-print", "calibration", "no-supports"]
 featured: true
+learning_order: 2
+learning_skill: "Set a print-quality baseline against the most-printed model on Earth"
 ---
 
 ## Why print this

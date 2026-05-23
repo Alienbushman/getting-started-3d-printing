@@ -12,6 +12,8 @@ layer_height_mm: 0.2
 description: "A low-poly faceted dog figurine. The key lesson: print it upside-down (legs up) to eliminate all overhangs and avoid needing supports."
 skill_tags: ["orientation", "no-supports", "figurine"]
 featured: true
+learning_order: 3
+learning_skill: "Think about orientation before adding supports"
 ---
 
 ## Why print this

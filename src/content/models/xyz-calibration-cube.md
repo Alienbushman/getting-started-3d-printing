@@ -12,6 +12,8 @@ layer_height_mm: 0.2
 description: "A 10 mm cube labelled with X, Y, Z axes. Print three copies, measure all axes with calipers, and tune your dimensional accuracy."
 skill_tags: ["calibration", "no-supports", "measurement"]
 featured: false
+learning_order: 1
+learning_skill: "Measure XYZ dimensional accuracy with calipers"
 ---
 
 ## Why print this
