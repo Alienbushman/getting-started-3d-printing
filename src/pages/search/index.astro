@@ -1,0 +1,83 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const base = import.meta.env.BASE_URL;
+const pagefindBase = `${base.replace(/\/$/, '')}/pagefind`;
+---
+
+<Base
+  title="Search"
+  description="Search the getting-started-3d-printing site — guides, models, glossary."
+>
+  <head slot="head">
+    <link rel="stylesheet" href={`${pagefindBase}/pagefind-ui.css`} />
+  </head>
+
+  <div class="mx-auto max-w-content px-4 md:px-8 lg:px-12 py-12">
+    <h1 class="font-display text-3xl font-semibold text-ink mb-2">Search</h1>
+    <p class="text-neutral-500 mb-8">
+      Look across guides, models, and the glossary. Try
+      <code class="text-xs bg-neutral-50 border border-neutral-100 rounded px-1.5 py-0.5">stringing</code>,
+      <code class="text-xs bg-neutral-50 border border-neutral-100 rounded px-1.5 py-0.5">vase mode</code>,
+      or
+      <code class="text-xs bg-neutral-50 border border-neutral-100 rounded px-1.5 py-0.5">PETG</code>.
+    </p>
+
+    <div id="search" class="pagefind-host"></div>
+
+    <noscript>
+      <p class="text-sm text-neutral-500 mt-6">
+        Search needs JavaScript. Try the
+        <a href={`${base}models/`} class="text-accent underline underline-offset-2">model gallery</a>
+        or
+        <a href={`${base}guide/`} class="text-accent underline underline-offset-2">guide hub</a>
+        instead.
+      </p>
+    </noscript>
+  </div>
+</Base>
+
+<script define:vars={{ pagefindBase }}>
+  // Pagefind ships with the production build (postbuild step). In dev (astro dev)
+  // the /pagefind/ directory does not exist — the import below will 404 and the
+  // search UI shows nothing. Build + preview for the real thing.
+  (async () => {
+    try {
+      const mod = await import(/* @vite-ignore */ `${pagefindBase}/pagefind-ui.js`);
+      const PagefindUI = mod.PagefindUI;
+      new PagefindUI({
+        element: '#search',
+        showSubResults: true,
+        showImages: false,
+        pageSize: 10,
+        resetStyles: false,
+        translations: {
+          placeholder: 'Search guides, models, glossary…',
+          zero_results: 'No results for [SEARCH]. Try a broader term.',
+        },
+      });
+    } catch (err) {
+      const host = document.getElementById('search');
+      if (host) {
+        host.innerHTML =
+          '<p class="text-sm text-neutral-500">Search index not available. Run <code>npm run build &amp;&amp; npm run preview</code> for the production search experience.</p>';
+      }
+      console.warn('Pagefind UI failed to load:', err);
+    }
+  })();
+</script>
+
+<style is:global>
+  /* Pagefind UI variables — match the site's accent palette. */
+  .pagefind-host {
+    --pagefind-ui-font: 'Inter', system-ui, sans-serif;
+    --pagefind-ui-primary: #E85D2F;
+    --pagefind-ui-text: #1A1A1A;
+    --pagefind-ui-background: #ffffff;
+    --pagefind-ui-border: #E5E2DC;
+    --pagefind-ui-tag: #FCE4D6;
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 6px;
+    --pagefind-ui-scale: 0.95;
+  }
+</style>
