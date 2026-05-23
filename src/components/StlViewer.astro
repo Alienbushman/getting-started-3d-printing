@@ -1,0 +1,192 @@
+---
+interface Props {
+  /** URL of the STL to load, e.g. `/3d-printing/models/3dbenchy.stl` */
+  src: string;
+  /** Alt text describing the model — used as the canvas aria-label. */
+  label: string;
+  /** Height in CSS pixels (desktop). Mobile collapses to a 280px square. Default: 420. */
+  height?: number;
+}
+
+const { src, label, height = 420 } = Astro.props;
+// Unique id so multiple viewers can coexist on a page if needed.
+const id = `stl-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<figure class="stl-viewer rounded-lg border border-neutral-100 bg-neutral-50 overflow-hidden">
+  <div
+    id={id}
+    class="relative w-full"
+    style={`height:${height}px;`}
+    data-src={src}
+    data-label={label}
+    role="img"
+    aria-label={`Interactive 3D preview of ${label}. Drag to orbit, scroll to zoom.`}
+  >
+    <div class="stl-loading absolute inset-0 flex items-center justify-center text-sm text-neutral-500" aria-hidden="true">
+      Loading preview…
+    </div>
+  </div>
+  <figcaption class="px-4 py-2 text-xs text-neutral-500 border-t border-neutral-100 bg-white">
+    Drag to orbit · scroll to zoom · double-click to reset.
+    <span class="text-neutral-400">Preview only — download the print-quality STL via the link above.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .stl-viewer canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    touch-action: none;
+    cursor: grab;
+  }
+  .stl-viewer canvas:active {
+    cursor: grabbing;
+  }
+  @media (max-width: 640px) {
+    .stl-viewer > div[id^="stl-"] {
+      height: 280px !important;
+    }
+  }
+</style>
+
+<script>
+  import * as THREE from 'three';
+  import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
+  import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+
+  type ViewerEl = HTMLElement & { __stlMounted?: boolean };
+
+  function mount(host: ViewerEl) {
+    if (host.__stlMounted) return;
+    host.__stlMounted = true;
+
+    const src = host.dataset.src;
+    const label = host.dataset.label ?? 'STL preview';
+    if (!src) return;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#F5F2EC');
+
+    const width = host.clientWidth || 600;
+    const height = host.clientHeight || 420;
+
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 5000);
+    camera.position.set(80, 60, 80);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(width, height);
+    host.appendChild(renderer.domElement);
+    renderer.domElement.setAttribute('aria-label', `${label} — 3D model preview`);
+
+    // 3-point soft lighting
+    const ambient = new THREE.AmbientLight(0xffffff, 0.55);
+    scene.add(ambient);
+    const key = new THREE.DirectionalLight(0xffffff, 0.85);
+    key.position.set(50, 80, 60);
+    scene.add(key);
+    const fill = new THREE.DirectionalLight(0xffffff, 0.35);
+    fill.position.set(-60, 30, -40);
+    scene.add(fill);
+    const rim = new THREE.DirectionalLight(0xffffff, 0.2);
+    rim.position.set(0, -80, -20);
+    scene.add(rim);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.rotateSpeed = 0.75;
+    controls.zoomSpeed = 0.85;
+    controls.enablePan = false;
+    controls.minDistance = 1;
+    controls.maxDistance = 2000;
+
+    const loader = new STLLoader();
+    loader.load(
+      src,
+      (geometry) => {
+        geometry.computeVertexNormals();
+        geometry.center();
+
+        const material = new THREE.MeshStandardMaterial({
+          color: 0xCFCAC0,
+          roughness: 0.55,
+          metalness: 0.05,
+          flatShading: false,
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+
+        // Rotate so Z-up STLs (the printable convention) face the camera nicely.
+        mesh.rotation.x = -Math.PI / 2;
+        scene.add(mesh);
+
+        // Fit camera to bounding sphere
+        geometry.computeBoundingSphere();
+        const sphere = geometry.boundingSphere;
+        if (sphere) {
+          const dist = sphere.radius * 2.8;
+          camera.position.set(dist, dist * 0.8, dist);
+          camera.lookAt(0, 0, 0);
+          controls.target.set(0, 0, 0);
+          controls.minDistance = sphere.radius * 0.6;
+          controls.maxDistance = sphere.radius * 8;
+        }
+
+        const loadingEl = host.querySelector<HTMLElement>('.stl-loading');
+        if (loadingEl) loadingEl.remove();
+
+        // Double-click resets the camera
+        const initialCamPos = camera.position.clone();
+        renderer.domElement.addEventListener('dblclick', () => {
+          camera.position.copy(initialCamPos);
+          controls.target.set(0, 0, 0);
+        });
+      },
+      undefined,
+      (err) => {
+        console.error('STL load failed:', src, err);
+        const loadingEl = host.querySelector<HTMLElement>('.stl-loading');
+        if (loadingEl) {
+          loadingEl.textContent = 'Preview unavailable. See the source link above for the file.';
+        }
+      },
+    );
+
+    function animate() {
+      controls.update();
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Resize handler (debounced)
+    let resizeTimer: number | undefined;
+    window.addEventListener('resize', () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        const w = host.clientWidth || 600;
+        const h = host.clientHeight || 420;
+        renderer.setSize(w, h);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      }, 80);
+    });
+  }
+
+  // Detail pages have one viewer above the fold, so we mount immediately. If
+  // a future page renders multiple viewers we can re-introduce lazy mounting
+  // via IntersectionObserver.
+  function init() {
+    document
+      .querySelectorAll<ViewerEl>('[id^="stl-"][data-src]')
+      .forEach(mount);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>
