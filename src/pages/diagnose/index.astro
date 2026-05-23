@@ -1,0 +1,314 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const base = import.meta.env.BASE_URL;
+const glossary = (term: string) => `${base}glossary/${term}/`;
+const guide = (anchor: string) =>
+  `${base}guide/08-common-failures/#${anchor}`;
+
+interface Fix {
+  text: string;
+  links?: { label: string; href: string }[];
+}
+
+interface Symptom {
+  id: string;
+  label: string;
+  visual: string;
+  cause: string;
+  fixes: Fix[];
+}
+
+const symptoms: Symptom[] = [
+  {
+    id: 'stringing',
+    label: 'Stringing between parts',
+    visual: 'Thin hairs of plastic connecting separate features, like a spider web.',
+    cause: 'The nozzle oozes plastic while moving. Usually too-high temperature or insufficient retraction.',
+    fixes: [
+      {
+        text: 'Lower nozzle temperature by 5°C (PLA: try 210°C instead of 215°C).',
+        links: [
+          { label: 'nozzle temperature', href: glossary('nozzle-temperature') },
+        ],
+      },
+      {
+        text: 'Increase retraction distance by 0.5 mm in the slicer.',
+        links: [{ label: 'retraction', href: glossary('retraction') }],
+      },
+      {
+        text: 'If strings persist after two adjustments, dry the filament — wet PLA oozes more.',
+      },
+    ],
+  },
+  {
+    id: 'layer-shifting',
+    label: 'Top half misaligned',
+    visual: 'Layers suddenly offset horizontally partway up the print.',
+    cause: 'The print head slipped on its axis. Loose belts, a collision, or speed too high.',
+    fixes: [
+      {
+        text: 'Check belt tension — belts should twang like a guitar string when plucked.',
+        links: [{ label: 'layer shifting', href: glossary('layer-shifting') }],
+      },
+      {
+        text: 'Lower print speed to ~50 mm/s.',
+        links: [{ label: 'print speed', href: glossary('print-speed') }],
+      },
+      {
+        text: 'Check for collisions with warped corners or blobs of plastic on the print.',
+      },
+    ],
+  },
+  {
+    id: 'warping',
+    label: 'Corners curl off the bed',
+    visual: 'Outer edges of the print lift away from the build plate.',
+    cause: 'Edges cool and contract faster than the interior. The tension peels the print off.',
+    fixes: [
+      {
+        text: 'Re-level the bed and wipe it with IPA — bad adhesion is the most common root cause.',
+        links: [
+          { label: 'bed adhesion', href: glossary('bed-adhesion') },
+          { label: 'PEI sheet', href: glossary('pei-sheet') },
+        ],
+      },
+      {
+        text: 'Raise bed temperature by 5°C (65°C for PLA, 80°C for PETG).',
+        links: [{ label: 'bed temperature', href: glossary('bed-temperature') }],
+      },
+      {
+        text: 'Add a 5–10 mm brim in the slicer.',
+        links: [{ label: 'brim', href: glossary('brim') }],
+      },
+      {
+        text: 'If the filament is ABS, no setting fixes this — you need an enclosed printer.',
+        links: [{ label: 'ABS', href: glossary('abs') }],
+      },
+    ],
+  },
+  {
+    id: 'elephants-foot',
+    label: 'Base wider than the rest',
+    visual: 'First few layers flare outward — the print has a slightly flared base.',
+    cause: 'First layer over-squished (Z offset too low), or bed too hot for too long.',
+    fixes: [
+      {
+        text: 'Raise the Z offset in 0.05 mm increments. The first layer should be squished, not pancaked.',
+        links: [
+          { label: "elephant's foot", href: glossary('elephants-foot') },
+          { label: 'first layer', href: glossary('first-layer') },
+        ],
+      },
+      {
+        text: 'Lower bed temperature by 5°C if the flare extends more than 2-3 layers up.',
+        links: [{ label: 'bed temperature', href: glossary('bed-temperature') }],
+      },
+    ],
+  },
+  {
+    id: 'under-extrusion',
+    label: 'Gaps or missing layers',
+    visual: 'Holes in walls, weak layers, a rough or porous texture.',
+    cause: 'The printer is depositing less plastic than the gcode asks for. Partial clog, wrong temperature, low flow rate, or extruder slipping.',
+    fixes: [
+      {
+        text: 'Check the nozzle is at the right temperature for your filament — even 5°C low matters.',
+        links: [{ label: 'nozzle temperature', href: glossary('nozzle-temperature') }],
+      },
+      {
+        text: 'Cold pull: heat the nozzle, push filament through, cool to 90°C, pull firmly. Removes partial clogs.',
+        links: [{ label: 'extruder', href: glossary('extruder') }],
+      },
+      {
+        text: 'Increase flow rate (extrusion multiplier) by 5% in the slicer.',
+      },
+      {
+        text: 'If the extruder clicks or grinds, the nozzle is fully clogged — see "no plastic coming out" below.',
+      },
+    ],
+  },
+  {
+    id: 'overheating',
+    label: 'Overhangs droop / fine details melt',
+    visual: 'Fine features look saggy or melted; overhangs droop where nothing supports them.',
+    cause: 'Part cooling fan not working, or speed too high on small features (not enough time to cool before the next layer lands).',
+    fixes: [
+      {
+        text: 'Confirm the part cooling fan is running during the print. Check the wire and test via the printer menu.',
+        links: [{ label: 'part cooling fan', href: glossary('part-cooling-fan') }],
+      },
+      {
+        text: 'Enable "minimum layer time" in the slicer — forces a slow-down on small cross-section layers.',
+        links: [{ label: 'overhang', href: glossary('overhang') }],
+      },
+      {
+        text: 'Lower nozzle temperature by 5°C — cooler plastic solidifies faster.',
+        links: [{ label: 'nozzle temperature', href: glossary('nozzle-temperature') }],
+      },
+    ],
+  },
+  {
+    id: 'z-banding',
+    label: 'Horizontal repeating bands',
+    visual: 'Bands or ripples around the outside of the print at a regular vertical interval.',
+    cause: 'The Z lead screw wobbles or its motor coupling is loose. Each full screw rotation produces one band.',
+    fixes: [
+      {
+        text: 'Check the lead screw coupling — it should be tight, centred, and not wobble.',
+      },
+      {
+        text: 'Lubricate the lead screw with PTFE-based grease (SuperLube or similar).',
+      },
+      {
+        text: 'If your firmware exposes it, reduce Z acceleration in the slicer machine settings.',
+        links: [{ label: 'G-code', href: glossary('g-code') }],
+      },
+    ],
+  },
+  {
+    id: 'clogged-nozzle',
+    label: 'No plastic coming out',
+    visual: 'Extruder running but no plastic at the nozzle. Often the extruder clicks.',
+    cause: 'Debris or carbonised filament blocking the nozzle bore.',
+    fixes: [
+      {
+        text: 'Cold pull: heat to 200°C, push filament through, drop to 90°C while holding pressure, then pull firmly. The plug comes out shaped to the nozzle interior.',
+        links: [
+          { label: 'hot end', href: glossary('hot-end') },
+          { label: 'extruder', href: glossary('extruder') },
+        ],
+      },
+      {
+        text: 'Repeat 2–3 times until the pulled plug is clean.',
+      },
+      {
+        text: 'If cold pulls don\'t clear it, replace the nozzle — they\'re cheap and wear out anyway.',
+      },
+    ],
+  },
+];
+---
+
+<Base
+  title="Diagnose"
+  description="Pick the symptom that matches your failed print and get the focused fix sequence — likeliest cause first."
+>
+  <div class="mx-auto max-w-content px-4 md:px-8 lg:px-12 py-12">
+    <header class="mb-8 max-w-xl">
+      <h1 class="font-display text-3xl font-semibold text-ink mb-3">Diagnose a failed print</h1>
+      <p class="text-neutral-500 text-lg leading-relaxed">
+        Pick the symptom that matches what you're seeing. Apply the first fix only,
+        print again, then come back if it didn't help. One change at a time — if two
+        changes happen at once and the next print works, you've learned nothing.
+      </p>
+    </header>
+
+    <!-- Symptom chips -->
+    <div class="flex flex-wrap gap-2 mb-8" role="group" aria-label="Symptom picker">
+      {symptoms.map((s, i) => (
+        <button
+          type="button"
+          data-symptom={s.id}
+          aria-pressed={i === 0 ? 'true' : 'false'}
+          aria-controls="diagnose-detail"
+          class="symptom-chip text-sm font-semibold border rounded px-3 py-1.5 transition-colors cursor-pointer"
+        >
+          {s.label}
+        </button>
+      ))}
+    </div>
+
+    <!-- Detail panel -->
+    <section id="diagnose-detail" class="border border-neutral-100 rounded-lg p-6 bg-white" aria-live="polite">
+      {symptoms.map((s, i) => (
+        <article data-symptom-detail={s.id} class:list={['symptom-detail', { hidden: i !== 0 }]}>
+          <h2 class="font-display text-xl font-semibold text-ink mb-2">{s.label}</h2>
+          <p class="text-sm text-neutral-500 mb-1"><strong class="text-ink">Looks like:</strong> {s.visual}</p>
+          <p class="text-sm text-neutral-500 mb-5"><strong class="text-ink">Likely cause:</strong> {s.cause}</p>
+
+          <h3 class="text-xs uppercase tracking-wide text-neutral-400 mb-3">Fixes — try in order</h3>
+          <ol class="space-y-3">
+            {s.fixes.map((fix, idx) => (
+              <li class="flex gap-3 text-sm leading-relaxed">
+                <span
+                  class="shrink-0 w-6 h-6 rounded-full bg-accent-soft text-accent flex items-center justify-center font-display font-semibold text-xs"
+                  aria-hidden="true"
+                >
+                  {idx + 1}
+                </span>
+                <span class="flex-1">
+                  <span class="text-ink">{fix.text}</span>
+                  {fix.links && fix.links.length > 0 && (
+                    <span class="block mt-1 text-xs text-neutral-500">
+                      Learn more:
+                      {fix.links.map((link, j) => (
+                        <>
+                          {' '}
+                          <a href={link.href} class="text-accent underline underline-offset-2 hover:opacity-80">{link.label}</a>{j < fix.links!.length - 1 ? ',' : ''}
+                        </>
+                      ))}
+                    </span>
+                  )}
+                </span>
+              </li>
+            ))}
+          </ol>
+
+          <p class="text-xs text-neutral-400 mt-6">
+            <a href={guide(s.id)} class="hover:text-accent transition-colors">
+              Read the long-form section in the common-failures guide &rarr;
+            </a>
+          </p>
+        </article>
+      ))}
+
+      <p class="text-xs text-neutral-500 mt-8 pt-6 border-t border-neutral-100">
+        None of these match? Search a photo + your printer model on Reddit or the
+        manufacturer's forum — the community has seen everything.
+      </p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .symptom-chip {
+    border-color: #E5E2DC;
+    color: #6B675F;
+    background: white;
+  }
+  .symptom-chip[aria-pressed="true"] {
+    border-color: #E85D2F;
+    color: #E85D2F;
+    background: #FCE4D6;
+  }
+  .symptom-chip:hover {
+    border-color: #E85D2F;
+    color: #E85D2F;
+  }
+</style>
+
+<script>
+  const chips = document.querySelectorAll<HTMLButtonElement>('.symptom-chip');
+  const details = document.querySelectorAll<HTMLElement>('.symptom-detail');
+
+  function show(id: string) {
+    chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.symptom === id)));
+    details.forEach((d) => {
+      const match = d.dataset.symptomDetail === id;
+      d.classList.toggle('hidden', !match);
+    });
+    if (id) {
+      history.replaceState(null, '', `#${id}`);
+    }
+  }
+
+  chips.forEach((c) => {
+    c.addEventListener('click', () => show(c.dataset.symptom!));
+  });
+
+  const hashId = location.hash.replace(/^#/, '');
+  if (hashId && document.querySelector(`[data-symptom-detail="${hashId}"]`)) {
+    show(hashId);
+  }
+</script>
