@@ -23,7 +23,7 @@ does NOT extend to model files (see PROJECT_SCOPE.md §5).
 | 7 | `spiral-vase-rose` | Spiral Vase Rose | lytta | CC-BY (probable) | https://www.printables.com/model/131488 | 🔶 Probable |
 | 8 | `cute-mini-octopus` | Cute Mini Octopus | McGybeer | CC (variant TBC) | https://www.printables.com/model/178035 | ⚠ Unverified |
 | 9 | `nameplate` | Nameplate | Makkuro | CC (variant TBC) | https://www.printables.com/model/33277 | ⚠ Unverified |
-| 10 | `two-color-coin` | Two-Color Calibration Coin | TBD | TBD | TBD | ❌ Not selected |
+| 10 | `two-color-coin` | Dual Extrusion Calibration Coin | SnobbishGoose | **CC0-1.0** | https://www.printables.com/model/346994 | ✅ Confirmed |
 
 **Legend:** ✅ Confirmed · 🔶 Probable (verify before use) · ⚠ Unverified (must check manually) · ❌ Not yet selected
 
@@ -61,14 +61,8 @@ The following attributions MUST appear in the site wherever the model is display
 
 ---
 
-## Model #10 — Replacement Needed
+## Model #10 — Two-Color Calibration Coin
 
-The two-color coin entry is a placeholder. Requirements for the replacement:
-- License: CC0 or CC-BY (CC-BY-SA acceptable; CC-BY-NC only if site is non-commercial)
-- Bed: fits on 50×50 mm
-- Print time: under 45 minutes
-- No supports
-- Teaches: M600 / filament change mid-print
-
-Once selected, add to this table and `models.yaml`, commit, and update the model-entries
-ticket (getting-started-3d-printing:013) instructions accordingly.
+SnobbishGoose's Dual Extrusion Calibration Coin (Printables #346994).
+Released CC0-1.0 (public domain). Confirmed via Printables model page 2026-05-17.
+63.5 mm flat disc, no supports, teaches M600 filament-change workflow.

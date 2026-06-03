@@ -1,8 +1,53 @@
 # getting-started-3d-printing
 
-Beginner-friendly 3D printing guides and printable models. Deployed at `alienbushman.com/3d-printing/`.
+> Beginner-friendly 3D printing guides and printable models — deployed at [alienbushman.com/3d-printing/](https://alienbushman.com/3d-printing/)
 
-**Stack:** Astro 5 · Tailwind CSS · Three.js (STL viewer) · Pagefind (static search) · nginx (Docker)
+A static site that teaches beginners how to 3D print through curated models, step-by-step guides, a glossary, and an interactive failure-diagnostic tool. Every page is generated at build time with Astro 5 and served from a Docker + nginx container inside the [alienbushman-website](https://github.com/Alienbushman/alienbushman-website) orchestrator.
+
+## What's here
+
+- **10 printable models** — curated beginner curriculum, ordered from first-print calibration to multi-colour M600 swaps. Each detail page shows difficulty, est. print time, recommended slicer settings, an interactive Three.js STL viewer, and a direct "Get the STL on Printables →" CTA to the author's page.
+- **8-topic getting-started guide** — covers everything from choosing a printer to dialling in retraction, written for complete beginners.
+- **~25-term glossary** — FDM jargon with gotchas, cross-references, and diagrams.
+- **Failure diagnostic** — symptom-picker UI: choose what you see, get the focused fix sequence.
+- **Pagefind site search** — static full-text index built at Docker deploy time; no runtime server needed.
+
+## Tech stack
+
+| Layer | Technology |
+|---|---|
+| Site generator | Astro 5 (static output) |
+| Styling | Tailwind CSS 3 |
+| 3D preview | Three.js + STLLoader + OrbitControls |
+| Search | Pagefind (static index, built post-`astro build`) |
+| Content | Astro content collections (MDX-lite Markdown) |
+| Fonts | Fontsource — Inter 400/500/600 + Space Grotesk 600 (self-hosted) |
+| Container | Docker — multi-stage: Node 22 build → nginx:alpine serve |
+| Reverse proxy | nginx subpath `/3d-printing/` — part of alienbushman-website orchestrator |
+
+## Project structure
+
+```
+getting-started-3d-printing/
+├── src/
+│   ├── content/
+│   │   ├── models/        # 10 model Markdown entries (frontmatter + prose)
+│   │   ├── guides/        # 8 beginner-guide topics
+│   │   └── glossary/      # ~25 term definitions
+│   ├── pages/             # Astro routes (index, models, guides, glossary, search…)
+│   ├── components/        # StlViewer, ModelCard, Callout, DifficultyMeter, etc.
+│   └── layouts/           # Base.astro — nav, footer, OG tags, skip-link
+├── public/
+│   ├── models/            # Decimated STL files for the in-browser viewer
+│   └── images/            # Hero photo, diagrams (SVG), model preview thumbnails
+├── research/              # models.yaml (source of truth), attribution.md, content outline
+├── design/                # Visual-identity tokens, wireframe notes
+├── docs/                  # AUDIT.md (a11y/perf/responsive results)
+├── scripts/               # decimate-for-viewer.py (reduces STLs to ≤2 MB)
+├── Dockerfile             # Multi-stage build → nginx:alpine
+├── nginx.conf             # Subpath config: /3d-printing/ → /usr/share/nginx/html
+└── astro.config.mjs       # base: '/3d-printing/', site: 'https://alienbushman.com'
+```
 
 ## Local dev
 
@@ -14,7 +59,7 @@ npm run dev        # http://localhost:4321/3d-printing/
 ## Build
 
 ```bash
-npm run build      # output → dist/
+npm run build      # astro build + pagefind index → dist/
 ```
 
 ## Docker
@@ -25,44 +70,42 @@ docker run --rm -p 8080:80 3d-printing
 # open http://localhost:8080/3d-printing/
 ```
 
-## Model library
+The Dockerfile installs all deps, runs `npm run build`, then copies `dist/` into an nginx:alpine image alongside `nginx.conf`.
 
-Each model lists licence, author, and source. STL downloads happen on the original
-author's page (Printables for 8 of 10, the same Printables mirrors for 3DBenchy +
-flexi-rex that the upstream GitHub repos publish) — this site curates and teaches;
-the authors host. 4 of 10 are CC-BY-NC (non-commercial only) and clearly marked in
-the UI before you leave the site.
+## How content is organised
 
-### Why we link
+Content lives in three Astro collections under `src/content/`:
 
-Smaller artefact, no re-distribution attribution burden in this repo, fresh files
-if authors update their models, and authors get the engagement on their own page.
-Source links are inert if the upstream model is taken down — that's a real cost
-and the trade-off accepted for v0.1.1.
+| Collection | File | Key frontmatter |
+|---|---|---|
+| `models` | `src/content/models/<slug>.md` | `title`, `difficulty`, `license`, `commercial_use`, `learning_order`, `source_url` |
+| `guides` | `src/content/guides/<topic>.md` | `title`, `order`, `est_read_time_minutes` |
+| `glossary` | `src/content/glossary/<term>.md` | `term`, `definition`, `see_also`, `gotcha` |
 
-## What's in v0.2.0
+`research/models.yaml` is the canonical source of truth for model metadata — edit there first, then sync frontmatter. `research/attribution.md` records verified licence status for every model.
 
-- `:039` — **Pagefind site search** at `/search/`. Static index built into the
-  Docker image at deploy time; covers models, guides, and glossary.
-- `:040` — **Beginner path** at `/start/`. 10 models in numbered curriculum order
-  via a new `learning_order` schema field; each step calls out the skill it teaches.
-- `:041` — **Failure diagnostic** at `/diagnose/`. Symptom-picker UI on top of
-  the common-failures guide; pick what you see, get the focused fix sequence.
-- `:042` — **Three.js STL viewer** on every detail page. Drag-orbit / scroll-zoom
-  preview, loaded from decimated viewer-quality copies in `public/models/` (the
-  primary download CTA still goes to the upstream source).
+## Attribution & licence
 
-## What's in v0.1.1
+**Site code** is released under the [MIT Licence](LICENSE).
 
-- `:032` — rewrite the two-color-coin entry against the actual chosen model
-  (SnobbishGoose's CC0 Dual Extrusion Calibration Coin) instead of a TBD placeholder.
-- `:033` — `commercial_use` schema field plus an amber "Non-commercial" pill on the
-  gallery, homepage, and detail page for the 4 CC-BY-NC models. Sync 5 model
-  frontmatters with the verified licence data from `research/models.yaml`.
-- `:037` — replace the never-shipped local "Download STL" button with a primary
-  "Get the STL on Printables →" CTA that opens the author's page (`rel="noopener
-  external"`, `target="_blank"`).
+**Model files** are NOT included in the MIT licence. Each model retains its original
+licence (CC0, CC-BY, CC-BY-SA, or CC-BY-NC) as listed on its detail page and in
+[`research/attribution.md`](research/attribution.md).
 
-## License
+**Images** are either original work (diagrams, model SVG placeholders) or sourced from
+Unsplash under the Unsplash Licence. Full credits in
+[`public/images/IMAGE_CREDITS.md`](public/images/IMAGE_CREDITS.md).
 
-Site code: MIT. Model files retain their original licenses (see each model detail page).
+Models marked **Non-commercial only** are clearly badged in the UI before the user leaves
+this site.
+
+## Acknowledgements
+
+Built as part of the [alienbushman.com](https://alienbushman.com) portfolio — a hub of
+small projects that each demonstrate a production-quality implementation of a specific
+technology. This site covers Astro 5 static generation, Tailwind design systems, and
+Three.js 3D in the browser.
+
+---
+
+*— alienbushman*
